@@ -13,6 +13,8 @@ export async function GET(request: NextRequest) {
   const themeName = searchParams.get('theme') || 'gruvbox';
   const hideBorder = searchParams.get('hide_border') === 'true';
   const borderRadius = parseInt(searchParams.get('border_radius') || '6', 10);
+  const fireColor = searchParams.get('fire') || undefined;
+  const ringColor = searchParams.get('ring') || undefined;
 
   if (!username) {
     const errorSvg = renderErrorCard('Missing "username" query parameter.', themeName);
@@ -28,7 +30,7 @@ export async function GET(request: NextRequest) {
   try {
     const { streak } = await getGitHubStats(username);
     const theme = getTheme(themeName);
-    const svg = renderStreakCard(streak, { theme, hideBorder, borderRadius });
+    const svg = renderStreakCard(streak, { theme, hideBorder, borderRadius, fireColor, ringColor });
 
     return new Response(svg, {
       status: 200,
